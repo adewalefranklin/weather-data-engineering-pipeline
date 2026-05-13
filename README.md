@@ -7,16 +7,14 @@ An end-to-end cloud-native data engineering platform that ingests weather and en
 
 API
 ↓
-Python extraction
+S3 raw
 ↓
-AWS S3 Raw Layer
+Spark/Databricks
 ↓
-Spark / Databricks transformation
+S3 transformed
 ↓
-AWS S3 Silver/Gold Delta or Parquet Layer
+Snowflake
 ↓
-Snowflake external stage + COPY INTO
-↓
-dbt models/tests/docs
+dbt
 ↓
 Power BI
