@@ -35,10 +35,12 @@ class WeatherPipeline:
                 data = extractor.fetch_weather(location_query, start_date, end_date)
                 s3_key = self.loader.s3_upload(data, location, start_date, end_date)
                 s3_keys.append(s3_key)
-                self.logger.info(f"Successfully uploaded weather data for {location_query} to S3")
+                self.logger.info(
+                    f"Successfully uploaded weather data for {location_query} to S3"
+                )
                 self.logger.info("Successfully uploaded all location data to S3")
                 return s3_keys
-               
+
         except Exception as e:
             self.logger.error("Pipeline failed")
             raise PipelineError(f"Pipeline execution failed: {e}") from e
