@@ -16,7 +16,7 @@ class S3Loader:
             "s3",
             aws_access_key_id=aws_access_key_id,
             aws_secret_access_key=aws_secret_access_key,
-            aws_region=aws_region,
+            region_name=aws_region,
         )
 
     def s3_upload(self, data, location, start_date, end_date):
@@ -41,9 +41,10 @@ class S3Loader:
             self.s3_client.put_object(
                 Bucket=self.bucket_name,
                 Key=s3_key,
-                Body=json.dump(payload, default=str),
+                Body=json.dumps(payload, default=str),
             )
             self.logger.info(f"Weather Data successfully Uploaded on to s3 Bucket")
+            return s3_key
         except Exception as e:
             self.logger.error(f"Weather Data Upload Failed: {e}")
             raise LoadError(f"Weather data upload could not be completed: {e}") from e

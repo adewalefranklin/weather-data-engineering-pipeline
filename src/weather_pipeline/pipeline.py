@@ -20,7 +20,7 @@ class WeatherPipeline:
                 aws_access_key_id=Config.get("AWS_ACCESS_KEY_ID"),
                 aws_secret_access_key=Config.get("AWS_SECRET_ACCESS_KEY"),
                 aws_region=Config.get("AWS_REGION"),
-                bucket_name=Config.get("AWS_BUCKET_NAME"),
+                bucket_name=Config.get("AWS_S3_BUCKET_NAME"),
                 prefix=Config.get("AWS_RAW_PREFIX"),
             )
             for location in locations:
@@ -39,7 +39,7 @@ class WeatherPipeline:
                     f"Successfully uploaded weather data for {location_query} to S3"
                 )
                 self.logger.info("Successfully uploaded all location data to S3")
-                return s3_keys
+            return s3_keys
 
         except Exception as e:
             self.logger.error("Pipeline failed")
