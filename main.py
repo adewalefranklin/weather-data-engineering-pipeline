@@ -13,7 +13,7 @@ def main():
     ]
     start_date = "2026-05-01"
     end_date = "2026-05-15"
-    s3_keys = pipeline.run(locations, start_date, end_date)
+    s3_keys = pipeline.run(locations, start_date, end_date, timeout=10)
     logger.info(f"Pipeline execution successfully completed! Data Stored at: {s3_keys}")
 
 
