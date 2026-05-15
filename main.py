@@ -10,9 +10,9 @@ def main():
         {"city": "Lagos", "country": "Nigeria"},
         {"city": "London", "country": "United Kingdom"},
         {"city": "Nairobi", "country": "Kenya"},
-        {"city": "New Dehli", "country": "India"}
-        {"city": "Port Louis", "country": "Mauritius"}
-        {"city": "Cologne", "country": "Germany"}
+        {"city": "New Dehli", "country": "India"},
+        {"city": "Port Louis", "country": "Mauritius"},
+        {"city": "Cologne", "country": "Germany"},
         {"city": "Dubai", "country": "United Arab Emirates"},
         {"city": "Arizona", "country": "United States of America"},
         {"city": "Shanghai", "country": "China"},
