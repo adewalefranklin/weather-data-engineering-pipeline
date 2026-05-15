@@ -3,7 +3,7 @@ import requests
 from weather_pipeline.logger import get_logger
 
 
-class WeatherExtract:
+class WeatherExtractor:
     def __init__(self, api_key, base_url):
         self.api_key = api_key
         self.base_url = base_url

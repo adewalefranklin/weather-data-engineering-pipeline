@@ -19,33 +19,31 @@ class S3Loader:
             aws_region=aws_region,
         )
 
-        def s3_upload(self, data, location, start_date, end_date):
-            self.logger.info("Initializing data upload on to s3 Bucket")
-            try:
-                timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-                payload = {
-                    "data": data,
-                    "location": location,
-                    "start_date": start_date,
-                    "end_date": end_date,
-                    "ingestion_time": datetime.now(timezone.utc).isoformat(),
-                }
-                city = location["city"]
-                country = location["country"]
+    def s3_upload(self, data, location, start_date, end_date):
+        self.logger.info("Initializing data upload on to s3 Bucket")
+        try:
+            timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+            payload = {
+                "data": data,
+                "location": location,
+                "start_date": start_date,
+                "end_date": end_date,
+                "ingestion_time": datetime.now(timezone.utc).isoformat(),
+            }
+            city = location["city"]
+            country = location["country"]
 
-                safe_location = f"{city}_{country}".replace(" ", "_")
+            safe_location = f"{city}_{country}".replace(" ", "_")
 
-                s3_key = f"{self.prefix}/{safe_location}/{start_date}.json"
-                self.logger.info(f"Uploading data to S3 with key: {s3_key}")
+            s3_key = f"{self.prefix}/{safe_location}/{start_date}.json"
+            self.logger.info(f"Uploading data to S3 with key: {s3_key}")
 
-                self.s3_client.put_object(
-                    Bucket=self.bucket_name,
-                    Key=s3_key,
-                    Body=json.dump(payload, default=str),
-                )
-                self.logger.info(f"Weather Data successfully Uploaded on to s3 Bucket")
-            except Exception as e:
-                self.logger.error(f"Weather Data Upload Failed: {e}")
-                raise LoadError(
-                    f"Weather data upload could not be completed: {e}"
-                ) from e
+            self.s3_client.put_object(
+                Bucket=self.bucket_name,
+                Key=s3_key,
+                Body=json.dump(payload, default=str),
+            )
+            self.logger.info(f"Weather Data successfully Uploaded on to s3 Bucket")
+        except Exception as e:
+            self.logger.error(f"Weather Data Upload Failed: {e}")
+            raise LoadError(f"Weather data upload could not be completed: {e}") from e
