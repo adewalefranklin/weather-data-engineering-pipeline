@@ -13,7 +13,7 @@ class WeatherPipeline:
     def run(self, locations, start_date, end_date):
         try:
             s3_keys = []
-            extractor = WeatherExtractor(
+            self.extractor = WeatherExtractor(
                 api_key=Config.get("API_KEY"), base_url=Config.get("BASE_URL")
             )
             self.loader = S3Loader(
@@ -32,7 +32,9 @@ class WeatherPipeline:
                     f"Starting pipeline for {location_query} from {start_date} to {end_date}"
                 )
 
-                data = extractor.fetch_weather(location_query, start_date, end_date)
+                data = self.extractor.fetch_weather(
+                    location_query, start_date, end_date
+                )
                 s3_key = self.loader.s3_upload(data, location, start_date, end_date)
                 s3_keys.append(s3_key)
                 self.logger.info(

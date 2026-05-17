@@ -18,6 +18,7 @@ class WeatherExtractor:
                 f"{base_url}/{location}/{start_date}/{end_date}"
                 f"?unitGroup=metric&key={self.api_key}&contentType=json"
             )
+
             response = requests.get(url, timeout=10)
             response.raise_for_status()
             data = response.json()

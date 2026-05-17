@@ -5,16 +5,18 @@ An end-to-end cloud-native data engineering platform that ingests weather and en
 
 # Architecture
 
-API
+Weather API
 ↓
-S3 raw
+Python ingestion
 ↓
-Spark/Databricks
+S3 raw JSON
 ↓
-S3 transformed
+Glue Spark ETL
 ↓
-Snowflake
+Partitioned parquet
 ↓
-dbt
+Glue Crawler
 ↓
-Power BI
+Glue Data Catalog
+↓
+Athena SQL query
