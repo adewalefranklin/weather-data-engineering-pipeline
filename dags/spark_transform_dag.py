@@ -15,9 +15,7 @@ def run_weather_pipeline():
     pipeline = WeatherPipeline()
 
     pipeline.run(
-        locations=[
-            {"city": "Lagos", "country": "Nigeria"}
-        ],
+        locations=[{"city": "Lagos", "country": "Nigeria"}],
         start_date="2026-05-01",
         end_date="2026-05-03",
     )
