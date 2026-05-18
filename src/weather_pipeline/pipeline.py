@@ -3,6 +3,7 @@ from weather_pipeline.load import S3Loader
 from weather_pipeline.logger import get_logger
 from weather_pipeline.exceptions import PipelineError
 from weather_pipeline.config import Config
+import time
 
 
 class WeatherPipeline:

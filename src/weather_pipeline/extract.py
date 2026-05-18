@@ -1,6 +1,7 @@
 from weather_pipeline.exceptions import ExtractError
 import requests
 from weather_pipeline.logger import get_logger
+import time
 
 
 class WeatherExtractor:
@@ -11,6 +12,10 @@ class WeatherExtractor:
 
     def fetch_weather(self, location, start_date, end_date):
         self.logger.info("Initializing weather fetch")
+
+        max_retries = 3
+        retry_delay = 60
+
         try:
             base_url = self.base_url.rstrip("/")
 
@@ -19,13 +24,32 @@ class WeatherExtractor:
                 f"?unitGroup=metric&key={self.api_key}&contentType=json"
             )
 
-            response = requests.get(url, timeout=10)
-            response.raise_for_status()
-            data = response.json()
-            self.logger.info(
-                f"weather data for {location}, between {start_date} and {end_date} successfully fetched"
-            )
-            return data
+            for attempt in range(1, max_retries + 1):
+
+                response = requests.get(url, timeout=10)
+
+                if response.status_code == 429:
+                    self.logger.warning(
+                        f"Rate limit hit. Retry {attempt}/{max_retries} "
+                        f"after {retry_delay} seconds"
+                    )
+
+                    time.sleep(retry_delay)
+                    continue
+
+                response.raise_for_status()
+
+                data = response.json()
+
+                self.logger.info(
+                    f"weather data for {location}, between "
+                    f"{start_date} and {end_date} successfully fetched"
+                )
+
+                return data
+
+            raise ExtractError("API rate limit exceeded after maximum retries")
+
         except Exception as e:
             self.logger.error(f"failed to fetch weather data: {e}")
             raise ExtractError(f"API call failed: {e}") from e
