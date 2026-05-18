@@ -1,4 +1,4 @@
-# Weather and Energy Intelligence Platform
+# Weather Intelligence Platform
 
 This project is an end-to-end cloud-native data engineering pipeline that extracts weather data from the Visual Crossing API, stores raw data in AWS S3, performs Spark-based transformations using AWS Glue, orchestrates workflows with Apache Airflow, and prepares transformed data for analytics and reporting.
 
