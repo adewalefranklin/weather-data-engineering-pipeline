@@ -2,7 +2,7 @@ from datetime import datetime
 import sys
 
 from airflow import DAG
-from airflow.operators.python import PythonOperator
+from airflow.providers.standard.operators.python import PythonOperator
 
 # Add src folder to Python path
 sys.path.append("/opt/airflow/src")
@@ -15,7 +15,9 @@ def run_weather_pipeline():
     pipeline = WeatherPipeline()
 
     pipeline.run(
-        location="Lagos,Nigeria",
+        locations=[
+    {"city": "Lagos", "country": "Nigeria"}
+],
         start_date="2026-05-01",
         end_date="2026-05-03",
     )

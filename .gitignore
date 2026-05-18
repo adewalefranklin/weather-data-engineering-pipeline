@@ -1,6 +1,32 @@
-.env
+# Virtual environment
 .venv/
+
+# Python cache
 __pycache__/
 *.pyc
+
+# Environment variables
+.env
+
+# Airflow logs
+logs/
+
+# Airflow metadata
+airflow-webserver.pid
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Pytest cache
+.pytest_cache/
+
+# VS Code settings
 .vscode/
-.idea/
+
+# Spark temporary files
+metastore_db/
+spark-warehouse/
+
+# Jupyter
+.ipynb_checkpoints/
