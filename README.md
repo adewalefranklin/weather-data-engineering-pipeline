@@ -5,65 +5,91 @@ This project is an end-to-end cloud-native data engineering pipeline that extrac
 
 # Architecture
 
-                    ┌──────────────────────┐
-                    │  Visual Crossing API │
-                    └──────────┬───────────┘
-                               │
-                               │ REST API Request
-                               ▼
-                    ┌──────────────────────┐
-                    │ Python Extract Layer │
-                    │  (WeatherExtractor)  │
-                    └──────────┬───────────┘
-                               │
-                               │ Raw JSON Payload
-                               ▼
-                    ┌──────────────────────┐
-                    │ AWS S3 Raw Storage   │
-                    │ raw/weather/...json  │
-                    └──────────┬───────────┘
-                               │
-                               │ Triggered by Airflow
-                               ▼
-                    ┌──────────────────────┐
-                    │ Apache Airflow DAG   │
-                    │ Orchestration Layer  │
-                    └──────────┬───────────┘
-                               │
-                               │ GlueJobOperator
-                               ▼
-                    ┌──────────────────────┐
-                    │ AWS Glue ETL Job     │
-                    │ Managed Spark Engine │
-                    └──────────┬───────────┘
-                               │
-                               │ Reads Spark Script
-                               ▼
-          ┌────────────────────────────────────────┐
-          │ Glue Spark Script stored in AWS S3     │
-          │ Weather ETL Spark Transformation.py    │
-          └────────────────┬───────────────────────┘
+                ┌──────────────────────┐
+                │  Developer / VS Code │
+                └──────────┬───────────┘
                            │
-                           │ Spark Transformations
+                           │ Git Commit / Push
                            ▼
-                ┌─────────────────────────┐
-                │ PySpark Transformation  │
-                │ Flatten + Clean Data    │
-                └──────────┬──────────────┘
+                ┌──────────────────────┐
+                │   GitHub Repository  │
+                └──────────┬───────────┘
                            │
-                           │ Parquet Output
+                           │ CI/CD Trigger
                            ▼
-                ┌─────────────────────────┐
-                │ AWS S3 Transformed Zone │
-                │ transformed/weather/    │
-                └──────────┬──────────────┘
+                ┌──────────────────────┐
+                │ GitHub Actions CI/CD │
+                │ pytest + Docker Build│
+                └──────────┬───────────┘
                            │
-                           │ Analytics Layer
+                           │ Validated Code
                            ▼
-                ┌─────────────────────────┐
-                │ Snowflake / Athena / BI │
-                │ Power BI Consumption    │
-                └─────────────────────────┘
+                ┌──────────────────────┐
+                │ Dockerized Pipeline  │
+                │ Python Runtime Image │
+                └──────────┬───────────┘
+                           │
+                           │ Runs Extract App
+                           ▼
+                ┌──────────────────────┐
+                │  Visual Crossing API │
+                └──────────┬───────────┘
+                           │
+                           │ REST API Request
+                           ▼
+                ┌──────────────────────┐
+                │ Python Extract Layer │
+                │  (WeatherExtractor)  │
+                └──────────┬───────────┘
+                           │
+                           │ Raw JSON Payload
+                           ▼
+                ┌──────────────────────┐
+                │ AWS S3 Raw Storage   │
+                │ raw/weather/...json  │
+                └──────────┬───────────┘
+                           │
+                           │ Triggered by Airflow
+                           ▼
+                ┌──────────────────────┐
+                │ Apache Airflow DAG   │
+                │ retries + scheduling │
+                └──────────┬───────────┘
+                           │
+                           │ GlueJobOperator
+                           ▼
+                ┌──────────────────────┐
+                │ AWS Glue ETL Job     │
+                │ Managed Spark Engine │
+                └──────────┬───────────┘
+                           │
+                           │ Reads Spark Script
+                           ▼
+      ┌────────────────────────────────────────┐
+      │ Glue Spark Script stored in AWS S3     │
+      │ Weather ETL Spark Transformation.py    │
+      └────────────────┬───────────────────────┘
+                       │
+                       │ Spark Transformations
+                       ▼
+            ┌─────────────────────────┐
+            │ PySpark Transformation  │
+            │ Flatten + Clean Data    │
+            └──────────┬──────────────┘
+                       │
+                       │ Parquet Output
+                       ▼
+            ┌─────────────────────────┐
+            │ AWS S3 Transformed Zone │
+            │ transformed/weather/    │
+            └──────────┬──────────────┘
+                       │
+                       │ Analytics Layer
+                       ▼
+            ┌─────────────────────────┐
+            │ Snowflake / Athena / BI │
+            │ Power BI Consumption    │
+            └─────────────────────────┘
 
 # Project Components
 
